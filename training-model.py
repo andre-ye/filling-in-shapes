@@ -10,7 +10,7 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 outline_filenames = tf.data.Dataset.list_files("../images/train/*.png", shuffle=False)
 outline_data = outline_filenames.map(lambda x: tf.io.decode_png(tf.io.read_file(x))/255)
 
-filled_filenames = tf.data.Dataset.list_files("../images/train/*.png", shuffle=False)
+filled_filenames = tf.data.Dataset.list_files("../images/test/*.png", shuffle=False)
 filled_data = filled_filenames.map(lambda x: tf.io.decode_png(tf.io.read_file(x))/255)
 
 complete_data = tf.data.Dataset.zip((outline_data, filled_data)).batch(32)
@@ -19,7 +19,7 @@ complete_data = tf.data.Dataset.zip((outline_data, filled_data)).batch(32)
 test_outline_filenames = tf.data.Dataset.list_files("../test_images/train/*.png", shuffle=False)
 test_outline_data = test_outline_filenames.map(lambda x: tf.io.decode_png(tf.io.read_file(x))/255)
 
-test_filled_filenames = tf.data.Dataset.list_files("../test_images/train/*.png", shuffle=False)
+test_filled_filenames = tf.data.Dataset.list_files("../test_images/test/*.png", shuffle=False)
 test_filled_data = test_filled_filenames.map(lambda x: tf.io.decode_png(tf.io.read_file(x))/255)
 
 test_complete_data = tf.data.Dataset.zip((test_outline_data, test_filled_data)).batch(32)
