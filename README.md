@@ -7,7 +7,7 @@ This repository contains code for a shape-filling AI.
 
 10k and 25k sample versions of the dataset were uploaded to [Kaggle](https://www.kaggle.com/washingtongold/filling-in-shapes?select=10k-sample-dataset-w-identical-io). The dataset includes:
 - *Shapes*: squares, rectangles, ellipses, circles, stars, filled circles/dots, lines/not closed shapes
-- *Picture*: 128x128 grayscale PNG
+- *Picture*: 128x128 grayscale PNG; padding of 10 on sides; pictures have an outline thickness of 4
 - *Transformations*: random shifts and rotations
 
 Examples of model performance on validation data:
