@@ -3,6 +3,7 @@ import numpy as np
 import random
 import os
 
+# all shapes are produced to have a "padding" of 10 units on the side of the image
 
 # returns square with random shift and side length
 def RandomSquare():
@@ -10,6 +11,7 @@ def RandomSquare():
     side_length = random.randint(20, 70)
     left_top_corner_loc = (random.randint(10, 118-side_length), random.randint(10,118-side_length))
     
+    # pt1 and pt2 are calculated such that part of the shape does not fall outside the picture
     outline_image = cv2.rectangle(0 * np.ones(shape=[128, 128], dtype=np.uint8), 
                                   pt1=left_top_corner_loc, 
                                   pt2=(left_top_corner_loc[0]+side_length, left_top_corner_loc[1]+side_length), 
@@ -139,12 +141,12 @@ def RandomFilledCircle():
     return filled_image, filled_image
 
 
-# returns random image rotation and slight zoom out
+# returns random image rotation
 def RandomRotation(img, degrees):
-    M = cv2.getRotationMatrix2D((64,64), degrees, 0.8)
+    M = cv2.getRotationMatrix2D((64,64), degrees, 1)
     return cv2.warpAffine(img, M, (img.shape[1], img.shape[0]))
   
-  
+
 def generate_dataset(num_data, path):
     dataset_path = os.path.join(os.getcwd(), path)
     train_path, test_path = os.path.join(dataset_path, "train"), os.path.join(dataset_path, "test")
