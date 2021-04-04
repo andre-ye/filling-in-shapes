@@ -2,7 +2,6 @@ import cv2
 import numpy as np
 import random
 import os
-from tqdm.notebook import tqdm
 
 
 # returns square with random shift and side length
@@ -152,7 +151,7 @@ def generate_dataset(num_data, path):
     os.makedirs(train_path)
     os.makedirs(test_path)
 
-    for i in tqdm(range(num_data)):
+    for i in range(num_data):
         
         # choose and instantiate a random shape function
         outline_image, filled_image = random.choice([RandomSquare, 
