@@ -81,14 +81,14 @@ def UNet(input_shape=(128,128,1)):
     return model
 
 model = UNet()
-model.compile(optimizer = tf.keras.optimizers.Adam(learning_rate=5e-4), 
+model.compile(optimizer = tf.keras.optimizers.Adam(learning_rate=5e-3), 
               loss="binary_crossentropy",
               metrics=["acc", "mse", "mae"])
 model_checkpoint = tf.keras.callbacks.ModelCheckpoint("best-unet.h5",
-                                                        monitor="val_loss",
-                                                        save_best_only=True)
+                                                       monitor="val_loss",
+                                                       save_best_only=True)
 reduce_lr = tf.keras.callbacks.ReduceLROnPlateau(monitor='val_loss', factor=0.5,
-                              patience=5, min_lr=0.001)
+                              patience=5, min_lr=0.0001)
 model.fit(complete_data, epochs=30, 
           validation_data=test_complete_data, 
           callbacks=[model_checkpoint, reduce_lr])
