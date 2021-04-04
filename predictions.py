@@ -1,30 +1,32 @@
 import os
-import tensorflow
+import tensorflow as tf
+import tensorflow.keras as keras
+import tensorflow.keras.layers as layers
 import cv2
 import numpy as np
 
 # LOADING MODEL
 
-# standard convolution cell w/ 2 convolutions and 1 batchnorm; serves as bottleneck
+# standard convolution cell w/ 2 convolutions and 1 batchnorm; also serves as bottleneck
 def conv_cell(input_layer, filters):
     
-    x = tensorflow.keras.layers.Conv2D(filters, (3,3), activation="relu", padding="same")(input_layer)
-    x = tensorflow.keras.layers.BatchNormalization()(x)
-    x = tensorflow.keras.layers.Conv2D(filters, (3,3), activation="relu", padding="same")(x)
+    x = layers.Conv2D(filters, (3,3), activation="relu", padding="same")(input_layer)
+    x = layers.BatchNormalization()(x)
+    x = layers.Conv2D(filters, (3,3), activation="relu", padding="same")(x)
     return x
 
 # standard down-cell (encoding step) w/ convolution and pooling
 def down_cell(input_layer, filters):
     
     c = conv_cell(input_layer, filters)
-    p = tensorflow.keras.layers.MaxPool2D((2, 2))(c)
+    p = layers.MaxPool2D((2, 2))(c)
     return c, p
 
 # standard up-cell (decoding step) w/ upsampling, concatenation, and convolution
 def up_cell(input_layer, concat_layer, filters):
     
-    x = tensorflow.keras.layers.UpSampling2D((2, 2))(input_layer)
-    x = tensorflow.keras.layers.Concatenate()([x, concat_layer])
+    x = layers.UpSampling2D((2, 2))(input_layer)
+    x = layers.Concatenate()([x, concat_layer])
     x = conv_cell(x, filters)
     return x
 
@@ -37,7 +39,7 @@ def UNet(input_shape=(128,128,1)):
     # b1 = bottleneck
     # p = pooling
 
-    inputs = tensorflow.keras.layers.Input(input_shape)
+    inputs = layers.Input(input_shape)
 
     uc1, p1 = down_cell(inputs, 8)
     uc2, p2 = down_cell(p1, 16)
@@ -51,9 +53,9 @@ def UNet(input_shape=(128,128,1)):
     dc3 = up_cell(dc2, uc2, 16)
     dc4 = up_cell(dc3, uc1, 8)
 
-    outputs = tensorflow.keras.layers.Conv2D(1, 1, padding="same", activation="sigmoid")(dc4)
+    outputs = layers.Conv2D(1, 1, padding="same", activation="sigmoid")(dc4)
 
-    model = tensorflow.keras.models.Model(inputs, outputs)
+    model = keras.models.Model(inputs, outputs)
     
     return model
 
@@ -63,7 +65,7 @@ model.load_weights(os.path.join(os.getcwd(), "model-weights.h5")) # set to where
 
 # PREDICTION
 
-directory = os.path.join(os.getcwd(), "test_images\\train") # set to wherever
+directory = os.path.join(os.getcwd(), "test_images\\train") # set to path for prediction folder
 for (root,dirs,files) in os.walk(directory):
     for file in files[:10]:
         filename = os.path.join(directory, file)
