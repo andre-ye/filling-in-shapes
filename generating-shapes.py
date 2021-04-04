@@ -1,6 +1,5 @@
 import cv2
 import numpy as np
-import matplotlib.pyplot as plt
 import random
 import os
 from tqdm.notebook import tqdm
