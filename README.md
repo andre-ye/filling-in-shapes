@@ -1,5 +1,5 @@
 # filling-in-shapes
-This repository contains code for a shape-filling AI.
+This repository contains code for a shape-filling AI. A fun exercise for learning about semantic segmentation.
 - `generating-shapes.py`: code for creating images of shapes in the dataset.
 - `training-model.py`: code for training a UNet-style neural network on the data.
 - `prediction.py`: code for displaying predictions on a folder of images.
